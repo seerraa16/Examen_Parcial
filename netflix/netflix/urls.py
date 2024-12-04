@@ -8,4 +8,3 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path("", views.home, name="home"),
 ]
-
