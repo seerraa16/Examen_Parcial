@@ -21,5 +21,6 @@ urlpatterns = [
     path('my-list/', my_list, name='my-list'),
     path('categories/', views.categories, name='categories'),
     path('categories/<int:genre_id>/', views.movies_by_category, name='movies-by-category'),
+    path('categories/<int:genre_id>/', views.movies_by_category, name='movies-by-category'),
     
 ]
