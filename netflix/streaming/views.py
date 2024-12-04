@@ -1,11 +1,12 @@
 from django.shortcuts import render
+import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Movie, Playlist, Recommendation
 from .serializers import MovieSerializer, PlaylistSerializer, RecommendationSerializer
 from django.http import JsonResponse
-from .utils import fetch_popular_movies, fetch_movie_details, fetch_movie_genres, fetch_popular_movies_by_genre
+from .utils import fetch_popular_movies, fetch_movie_details
 
 
 # Vista Home para plantillas
@@ -32,8 +33,7 @@ def categories(request):
 def my_list(request):
     return render(request, 'my_list.html')
 
-def search(request):
-    return render(request, 'search.html')
+
 
 
 from django.shortcuts import render
@@ -42,23 +42,87 @@ from .utils import fetch_movies_from_tmdb
 # Vista de búsqueda
 def search_movies(request):
     query = request.GET.get('query', '')
+    movies = []
+
     if query:
-        try:
-            # Busca películas usando la API de TMDB
-            data = fetch_movies_from_tmdb('search/movie', {'query': query})
-            movies = data['results']  # Las películas que coinciden con la búsqueda
-            # Añadir la base de URL para las imágenes
-            base_url = "https://image.tmdb.org/t/p/w500/"
-            for movie in movies:
-                movie['poster_url'] = base_url + movie['poster_path']
-            return render(request, 'home.html', {'movies': movies, 'query': query})
-        except Exception as e:
-            return render(request, 'home.html', {'error': str(e)})
-    return render(request, 'home.html', {'movies': [], 'query': query})
+        api_key = 'tu_api_key_aquí'  # O usa settings.TMDB_API_KEY si lo defines en settings.py
+        url = f'https://api.themoviedb.org/3/search/movie'
+        params = {
+            'api_key': api_key,
+            'query': query,
+            'language': 'es-ES'  # Cambia el idioma si es necesario
+        }
 
+        response = requests.get(url, params=params)
 
+        if response.status_code == 200:
+            data = response.json()
+            movies = data.get('results', [])
+
+    return render(request, 'search_results.html', {'movies': movies, 'query': query})
 
 # Vistas para la API
+import requests
+from django.shortcuts import render
+
+# API Key
+API_KEY = '1fe07a37512a920380b7c85f053ff3ea'
+
+# Vista para mostrar categorías
+def categories(request):
+    url = f'https://api.themoviedb.org/3/genre/movie/list'
+    params = {
+        'api_key': API_KEY,
+        'language': 'es-ES'  # Cambia el idioma si es necesario
+    }
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        genres = data.get('genres', [])
+    else:
+        genres = []
+
+    return render(request, 'categories.html', {'genres': genres})
+
+
+
+
+# Vista para mostrar las películas de un género
+def movies_by_category(request, genre_id):
+    # URL de la API de MovieDB
+    url = f'https://api.themoviedb.org/3/discover/movie?with_genres={genre_id}&api_key=YOUR_API_KEY'
+
+    # Hacer la solicitud a la API
+    response = requests.get(url)
+    
+    # Verificar que la respuesta fue exitosa (código 200)
+    if response.status_code == 200:
+        data = response.json()  # Obtener los resultados de la API
+        print("API Response:", data)  # Imprimir la respuesta para depurar
+        
+        # Obtener las películas del género
+        movies = data.get('results', [])
+        print("Movies:", movies)  # Imprimir las películas obtenidas
+        
+    else:
+        # Si no se obtienen películas, se pasa una lista vacía
+        movies = []
+        print("Error al obtener las películas")  # Imprimir mensaje de error en caso de fallo
+
+    # Obtener los géneros para mostrar en la barra de navegación
+    genres_url = 'https://api.themoviedb.org/3/genre/movie/list?api_key=YOUR_API_KEY'
+    genres_response = requests.get(genres_url)
+    if genres_response.status_code == 200:
+        genres = genres_response.json().get('genres', [])
+    else:
+        genres = []
+
+    # Renderizar el template pasando las películas y géneros
+    return render(request, 'categories.html', {'movies': movies, 'genres': genres})
+
+
 class MovieListView(APIView):
     def get(self, request):
         movies = Movie.objects.all()

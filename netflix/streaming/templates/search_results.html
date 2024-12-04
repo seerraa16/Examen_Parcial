@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de búsqueda</title>
+</head>
+<body>
+    <h1>Resultados de búsqueda</h1>
+    <p>Buscando: "{{ query }}"</p>
+
+    {% if movies %}
+        <ul>
+            {% for movie in movies %}
+                <li>
+                    <strong>{{ movie.title }}</strong> ({{ movie.release_date|default:"Fecha no disponible" }})
+                    <p>{{ movie.overview|default:"Sin descripción disponible" }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron películas para "{{ query }}".</p>
+    {% endif %}
+</body>
+</html>
+
+

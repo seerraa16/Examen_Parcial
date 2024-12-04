@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Categorías</h1>
+    
+    <!-- Lista de géneros -->
+    <ul class="categories-list">
+        {% for genre in genres %}
+            <li class="category-item">
+                <a href="{% url 'streaming:movies-by-category' genre.id %}">
+                    {{ genre.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Si hay películas de un género, mostrarlas -->
+    {% if movies %}
+        <h2>Películas en esta categoría</h2>
+        <div class="movies-grid">
+            {% for movie in movies %}
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                    <h3>{{ movie.title }}</h3>
+                    <p>{{ movie.overview }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No se encontraron películas para este género.</p>
+    {% endif %}
+</body>
+</html>
