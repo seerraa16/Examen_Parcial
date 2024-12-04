@@ -1,19 +1,23 @@
+{% load static %}
+
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Netflix UAX{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 </head>
 <body>
     <header>
         <nav>
             <ul>
                 <li><a href="{% url 'home' %}">Inicio</a></li>
-                <li><a href="{% url 'movies' %}">Películas</a></li>
-                <li><a href="{% url 'series' %}">Series</a></li>
-                <li><a href="{% url 'my_account' %}">Mi Cuenta</a></li>
+                <li><a href="{% url 'streaming:categories' %}">Categorías</a></li>
+                <li><a href="{% url 'streaming:my-list' %}">Mi Lista</a></li>
+                <li><a href="{% url 'streaming:search' %}">Buscar</a></li>
             </ul>
         </nav>
     </header>

@@ -11,13 +11,29 @@ from .utils import fetch_popular_movies, fetch_movie_details, fetch_movie_genres
 # Vista Home para plantillas
 # Vista Home para plantillas
 def home(request):
-    """Obtiene películas populares y las organiza por género."""
+    """Obtiene películas populares y las muestra en la plantilla de inicio."""
     try:
-        movies_by_genre = fetch_popular_movies_by_genre()  # Llama a la nueva función
-        return render(request, 'home.html', {'movies_by_genre': movies_by_genre})
+        data = fetch_popular_movies()  # Llama a la función que obtiene películas populares
+        movies = data['results']  # La clave 'results' contiene las películas
+        # Añadir la base de URL para las imágenes
+        base_url = "https://image.tmdb.org/t/p/w500/"
+        for movie in movies:
+            movie['poster_url'] = base_url + movie['poster_path']
+        return render(request, 'home.html', {'movies': movies})  # Enviar películas a la plantilla
     except Exception as e:
         return render(request, 'home.html', {'error': str(e)})
 
+
+from django.shortcuts import render
+
+def categories(request):
+    return render(request, 'categories.html')
+
+def my_list(request):
+    return render(request, 'my_list.html')
+
+def search(request):
+    return render(request, 'search.html')
 
 
 from django.shortcuts import render

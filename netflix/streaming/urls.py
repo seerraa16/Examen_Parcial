@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import MovieListView, MovieDetailView, PlaylistView, RecommendationView, home
 from .views import popular_movies, movie_details, search_movies
-
+from .views import categories, my_list, search
 app_name = 'streaming'
 
 
@@ -14,4 +14,8 @@ urlpatterns = [
     path('api/playlists/', PlaylistView.as_view(), name='playlist'),
     path('api/recommendations/', RecommendationView.as_view(), name='recommendation'),
     path('search/', search_movies, name='search_movies'),
+    path('categories/', categories, name='categories'),
+    path('my-list/', my_list, name='my-list'),
+    path('search/', search, name='search'),
+    
 ]
