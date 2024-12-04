@@ -9,18 +9,40 @@ from .utils import fetch_popular_movies, fetch_movie_details
 
 
 # Vista Home para plantillas
+# Vista Home para plantillas
 def home(request):
     """Obtiene películas populares y las muestra en la plantilla de inicio."""
     try:
         data = fetch_popular_movies()  # Llama a la función que obtiene películas populares
         movies = data['results']  # La clave 'results' contiene las películas
-        # Añadir la base de URL para las imágenes
         base_url = "https://image.tmdb.org/t/p/w500/"
         for movie in movies:
             movie['poster_url'] = base_url + movie['poster_path']
-        return render(request, 'home.html', {'movies': movies})
+        return render(request, 'home.html', {'movies': movies, 'query': None})
     except Exception as e:
         return render(request, 'home.html', {'error': str(e)})
+
+
+from django.shortcuts import render
+from .utils import fetch_movies_from_tmdb
+
+# Vista de búsqueda
+def search_movies(request):
+    query = request.GET.get('query', '')
+    if query:
+        try:
+            # Busca películas usando la API de TMDB
+            data = fetch_movies_from_tmdb('search/movie', {'query': query})
+            movies = data['results']  # Las películas que coinciden con la búsqueda
+            # Añadir la base de URL para las imágenes
+            base_url = "https://image.tmdb.org/t/p/w500/"
+            for movie in movies:
+                movie['poster_url'] = base_url + movie['poster_path']
+            return render(request, 'home.html', {'movies': movies, 'query': query})
+        except Exception as e:
+            return render(request, 'home.html', {'error': str(e)})
+    return render(request, 'home.html', {'movies': [], 'query': query})
+
 
 
 # Vistas para la API
