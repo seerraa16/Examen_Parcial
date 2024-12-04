@@ -14,9 +14,14 @@ def home(request):
     try:
         data = fetch_popular_movies()  # Llama a la función que obtiene películas populares
         movies = data['results']  # La clave 'results' contiene las películas
+        # Añadir la base de URL para las imágenes
+        base_url = "https://image.tmdb.org/t/p/w500/"
+        for movie in movies:
+            movie['poster_url'] = base_url + movie['poster_path']
         return render(request, 'home.html', {'movies': movies})
     except Exception as e:
         return render(request, 'home.html', {'error': str(e)})
+
 
 # Vistas para la API
 class MovieListView(APIView):
