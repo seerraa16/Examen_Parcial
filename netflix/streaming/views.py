@@ -45,7 +45,7 @@ def search_movies(request):
     movies = []
 
     if query:
-        api_key = 'tu_api_key_aquí'  # O usa settings.TMDB_API_KEY si lo defines en settings.py
+        api_key = '1fe07a37512a920380b7c85f053ff3ea'  # O usa settings.TMDB_API_KEY si lo defines en settings.py
         url = f'https://api.themoviedb.org/3/search/movie'
         params = {
             'api_key': api_key,

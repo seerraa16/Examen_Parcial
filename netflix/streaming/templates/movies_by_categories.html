@@ -1,39 +1,23 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Películas en {{ genre.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">Inicio</a></li>
-                <li><a href="/categories/">Categorías</a></li>
-            </ul>
-        </nav>
-    </header>
+{% extends 'base.html' %}
 
-    <h1>Películas en {{ genre.name }}</h1>
+{% block title %}Películas por categoría - {{ genre.name }}{% endblock %}
+
+{% block content %}
+    <h1>Películas en la categoría de {{ genre.name }}</h1>
 
     {% if movies %}
-        <div class="movie-grid">
+        <ul class="movie-list">
             {% for movie in movies %}
-                <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <h3>{{ movie.title }}</h3>
+                <li class="movie-item">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" class="movie-poster" />
+                    <div class="movie-title">
+                        <p>{{ movie.title }}</p>
+                    </div>
                     <p>{{ movie.overview }}</p>
-                </div>
+                </li>
             {% endfor %}
-        </div>
+        </ul>
     {% else %}
         <p>No se encontraron películas para esta categoría.</p>
     {% endif %}
-
-    <footer>
-        <p>&copy; 2024 Netflixuax. Todos los derechos reservados.</p>
-    </footer>
-</body>
-</html>
+{% endblock %}

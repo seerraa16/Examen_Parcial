@@ -193,3 +193,27 @@ footer p {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.movie-info {
+    padding: 10px;
+}
+
+.movie-info h2 {
+    font-size: 18px;
+    color: #ffffff;
+    margin: 10px 0;
+}
+
+.movie-info p {
+    font-size: 14px;
+    color: #b3b3b3;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-poster {
+    width: 100%;
+    display: block;
+    border-bottom: 4px solid #e50914;
+}
