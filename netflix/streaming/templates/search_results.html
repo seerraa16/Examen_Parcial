@@ -1,27 +1,36 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados de búsqueda</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 </head>
 <body>
-    <h1>Resultados de búsqueda</h1>
-    <p>Buscando: "{{ query }}"</p>
+    <header>
+        <h1>Resultados de búsqueda</h1>
+        <p>Buscando: "{{ query }}"</p>
+    </header>
 
     {% if movies %}
-        <ul>
+        <div class="movies-list">
             {% for movie in movies %}
-                <li>
-                    <strong>{{ movie.title }}</strong> ({{ movie.release_date|default:"Fecha no disponible" }})
+            <div class="movie-item">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" />
+                <div class="movie-info">
+                    <h2>{{ movie.title }}</h2>
+                    <p>{{ movie.release_date|default:"Fecha no disponible" }}</p>
                     <p>{{ movie.overview|default:"Sin descripción disponible" }}</p>
-                </li>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>No se encontraron películas para "{{ query }}".</p>
     {% endif %}
 </body>
-</html>
 
 

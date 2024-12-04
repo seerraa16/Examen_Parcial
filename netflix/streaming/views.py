@@ -6,7 +6,7 @@ from rest_framework import status
 from .models import Movie, Playlist, Recommendation
 from .serializers import MovieSerializer, PlaylistSerializer, RecommendationSerializer
 from django.http import JsonResponse
-from .utils import fetch_popular_movies, fetch_movie_details
+from .utils import fetch_popular_movies, fetch_movie_details, fetch_movie_genres
 
 
 # Vista Home para plantillas
@@ -99,23 +99,34 @@ import requests
 from django.shortcuts import render
 
 def movies_by_category(request, genre_id):
-    # URL de la API de MovieDB para obtener películas por género
-    url = f'https://api.themoviedb.org/3/discover/movie?with_genres={genre_id}&api_key=1fe07a37512a920380b7c85f053ff3ea'
+    # Obtener todos los géneros para mostrarlos en la lista de categorías
+    genres = fetch_movie_genres()
 
-    # Realizar la solicitud GET a la API
-    response = requests.get(url)
-    
-    # Verificar si la respuesta fue exitosa (código 200)
+    # URL de la API para obtener películas del género seleccionado
+    url = f'https://api.themoviedb.org/3/discover/movie'
+    params = {
+        'api_key': '1fe07a37512a920380b7c85f053ff3ea',  # Asegúrate de usar tu API Key
+        'with_genres': genre_id,
+        'language': 'es-ES',  # Idioma en español
+        'sort_by': 'popularity.desc'  # Ordena por popularidad
+    }
+
+    # Llamar a la API para obtener películas del género
+    response = requests.get(url, params=params)
+
     if response.status_code == 200:
         data = response.json()
-        print("API Response:", data)  # Verifica lo que devuelve la API
         movies = data.get('results', [])
     else:
-        print("Error al obtener películas de la API:", response.status_code)
         movies = []
 
-    # Pasar las películas al template
-    return render(request, 'categories.html', {'movies': movies})
+    # Renderizar la plantilla con géneros y películas del género seleccionado
+    return render(request, 'categories.html', {
+        'genres': genres,
+        'movies': movies,
+        'selected_genre': genre_id,  # Enviar el género seleccionado para mostrarlo
+    })
+
 
 
 
@@ -176,3 +187,29 @@ def movie_details(request, movie_id):
         return JsonResponse(data, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+def search_movies(request):
+    query = request.GET.get('query', '')
+    movies = []
+
+    if query:
+        api_key = '1fe07a37512a920380b7c85f053ff3ea'
+        url = f'https://api.themoviedb.org/3/search/movie'
+        params = {
+            'api_key': api_key,
+            'query': query,
+            'language': 'es-ES'
+        }
+
+        response = requests.get(url, params=params)
+
+        if response.status_code == 200:
+            data = response.json()
+            movies = data.get('results', [])
+            
+            # Construir la URL de los pósters
+            base_url = "https://image.tmdb.org/t/p/w500/"
+            for movie in movies:
+                movie['poster_url'] = base_url + movie['poster_path'] if movie.get('poster_path') else '/static/images/placeholder.png'
+
+    return render(request, 'search_results.html', {'movies': movies, 'query': query})

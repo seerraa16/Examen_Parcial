@@ -17,9 +17,7 @@ urlpatterns = [
     path('api/playlists/', PlaylistView.as_view(), name='playlist'),
     path('api/recommendations/', RecommendationView.as_view(), name='recommendation'),
     path('search/', search_movies, name='search-movies'),
-    path('categories/', categories, name='categories'),
+    path('categories/', views.categories, name='categories'),  # Mantén esta para la página de categorías
+    path('categories/<int:genre_id>/', views.movies_by_category, name='movies-by-category'),  # Mantén esta para los géneros
     path('my-list/', my_list, name='my-list'),
-    path('categories/', views.categories, name='categories'),
-    path('categories/<int:genre_id>/', views.movies_by_category, name='movies-by-category'),
-    
 ]

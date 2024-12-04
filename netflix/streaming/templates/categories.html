@@ -13,7 +13,7 @@
     <!-- Lista de géneros -->
     <ul class="categories-list">
         {% for genre in genres %}
-            <li class="category-item">
+            <li class="category-item {% if genre.id == selected_genre %}active{% endif %}">
                 <a href="{% url 'streaming:movies-by-category' genre.id %}">
                     {{ genre.name }}
                 </a>
@@ -21,7 +21,7 @@
         {% endfor %}
     </ul>
 
-    <!-- Si hay películas de un género, mostrarlas -->
+    <!-- Mostrar películas del género seleccionado -->
     {% if movies %}
         <h2>Películas en esta categoría</h2>
         <div class="movies-grid">
@@ -34,7 +34,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p>No se encontraron películas para este género.</p>
+        <p>No se encontraron películas para esta categoría.</p>
     {% endif %}
 </body>
 </html>

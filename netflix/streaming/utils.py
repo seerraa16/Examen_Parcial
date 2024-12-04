@@ -26,7 +26,8 @@ def fetch_movie_genres():
     """Obtiene todos los géneros disponibles desde la API de TMDb."""
     endpoint = "genre/movie/list"
     data = fetch_movies_from_tmdb(endpoint)
-    return {genre['id']: genre['name'] for genre in data['genres']}
+    return data['genres']  # Devuelve directamente la lista de géneros
+
 
 def fetch_popular_movies_by_genre():
     """Obtiene las películas populares organizadas por género."""
