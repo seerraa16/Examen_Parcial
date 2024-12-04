@@ -6,17 +6,17 @@
     <h1>Películas en la categoría de {{ genre.name }}</h1>
 
     {% if movies %}
-        <ul class="movie-list">
+        <div class="movies-list">
             {% for movie in movies %}
-                <li class="movie-item">
+                <div class="movie-item">
                     <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" class="movie-poster" />
-                    <div class="movie-title">
-                        <p>{{ movie.title }}</p>
+                    <div class="movie-info">
+                        <h2>{{ movie.title }}</h2>
+                        <p>{{ movie.overview }}</p>
                     </div>
-                    <p>{{ movie.overview }}</p>
-                </li>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>No se encontraron películas para esta categoría.</p>
     {% endif %}
