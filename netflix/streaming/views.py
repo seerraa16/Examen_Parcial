@@ -7,8 +7,6 @@ from .models import Movie, Playlist, Recommendation
 from .serializers import MovieSerializer, PlaylistSerializer, RecommendationSerializer
 from django.http import JsonResponse
 from .utils import fetch_popular_movies, fetch_movie_details
-from django.shortcuts import render, get_object_or_404
-from .models import Genre
 
 
 # Vista Home para plantillas
@@ -47,7 +45,7 @@ def search_movies(request):
     movies = []
 
     if query:
-        api_key = '1fe07a37512a920380b7c85f053ff3ea'  # O usa settings.TMDB_API_KEY si lo defines en settings.py
+        api_key = 'tu_api_key_aquí'  # O usa settings.TMDB_API_KEY si lo defines en settings.py
         url = f'https://api.themoviedb.org/3/search/movie'
         params = {
             'api_key': api_key,
@@ -91,18 +89,33 @@ def categories(request):
 
 
 
+
+
 from django.shortcuts import render, get_object_or_404
-from .models import Genre
-from .models import Movie  # Assuming Movie model exists
+from .models import Genre  # Importa tu modelo de géneros
+import requests
+
+import requests
+from django.shortcuts import render
 
 def movies_by_category(request, genre_id):
-    # Get the genre, or return 404 if not found
-    genre = get_object_or_404(Genre, id=genre_id)
+    # URL de la API de MovieDB para obtener películas por género
+    url = f'https://api.themoviedb.org/3/discover/movie?with_genres={genre_id}&api_key=1fe07a37512a920380b7c85f053ff3ea'
+
+    # Realizar la solicitud GET a la API
+    response = requests.get(url)
     
-    # Query movies based on the genre
-    movies = Movie.objects.filter(genre=genre)
-    
-    return render(request, 'movies_by_category.html', {'genre': genre, 'movies': movies})
+    # Verificar si la respuesta fue exitosa (código 200)
+    if response.status_code == 200:
+        data = response.json()
+        print("API Response:", data)  # Verifica lo que devuelve la API
+        movies = data.get('results', [])
+    else:
+        print("Error al obtener películas de la API:", response.status_code)
+        movies = []
+
+    # Pasar las películas al template
+    return render(request, 'categories.html', {'movies': movies})
 
 
 
