@@ -36,22 +36,48 @@ header nav ul li a {
 }
 
 header nav ul li a:hover {
-    color: #e50914; /* Netflix red for hover effect */
+    color: #39ff14; /* Verde fosforito para el hover */
 }
 
 /* Section for Movie Genres */
 h1 {
     text-align: center;
     margin: 20px 0;
-    color: #e50914;
+    color: #39ff14; /* Verde fosforito */
     font-size: 36px;
+}
+
+/* Categories List */
+.categories-list {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.category-item {
+    background-color: #222222;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+.category-item a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.category-item:hover {
+    background-color: #39ff14; /* Verde fosforito para hover */
 }
 
 /* Movie Grid */
 .movies-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     padding: 20px;
     margin: 0 auto;
@@ -73,21 +99,18 @@ h1 {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Movie Poster */
 .movie-item img {
     width: 100%;
     height: auto;
-    border-bottom: 4px solid #e50914;
+    border-bottom: 4px solid #39ff14; /* Verde fosforito para el borde */
 }
 
-/* Movie Title */
 .movie-info h2 {
     font-size: 18px;
     margin: 10px;
-    color: #e50914;
+    color: #39ff14; /* Verde fosforito */
 }
 
-/* Movie Description */
 .movie-info p {
     font-size: 14px;
     color: #b3b3b3;
@@ -95,6 +118,15 @@ h1 {
     height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* Genre Headers */
+h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin: 40px 20px 20px;
+    border-left: 5px solid #39ff14; /* Verde fosforito */
+    padding-left: 10px;
 }
 
 /* Footer */
@@ -119,12 +151,94 @@ footer p {
     }
 
     .movies-list {
-        flex-direction: column;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
 
-    .movie-item {
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto 20px;
+    .category-item {
+        padding: 10px;
     }
+}
+
+/* Movie Category Page Styles */
+.movies-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+.movie-item {
+    background-color: #333333;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.movie-item h2 {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #e5e5e5;
+}
+
+.movie-item p {
+    font-size: 14px;
+    color: #b3b3b3;
+    margin: 0;
+    height: 50px; /* Limit description height */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-info {
+    padding: 10px;
+}
+
+.movie-info h2 {
+    font-size: 18px;
+    color: #ffffff;
+    margin: 10px 0;
+}
+
+.movie-info p {
+    font-size: 14px;
+    color: #b3b3b3;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-poster {
+    width: 100%;
+    display: block;
+    border-bottom: 4px solid #39ff14; /* Verde fosforito */
+}
+
+.category-item.active {
+    background-color: #39ff14; /* Verde fosforito para la categoría activa */
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.add-to-list-btn {
+    background-color: #39ff14; /* Verde fosforito */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-to-list-btn:hover {
+    background-color: #32e02d; /* Un tono ligeramente más oscuro */
 }
