@@ -5,22 +5,19 @@ from rest_framework import status
 from .models import Movie, Playlist, Recommendation
 from .serializers import MovieSerializer, PlaylistSerializer, RecommendationSerializer
 from django.http import JsonResponse
-from .utils import fetch_popular_movies, fetch_movie_details
+from .utils import fetch_popular_movies, fetch_movie_details, fetch_movie_genres, fetch_popular_movies_by_genre
 
 
 # Vista Home para plantillas
 # Vista Home para plantillas
 def home(request):
-    """Obtiene películas populares y las muestra en la plantilla de inicio."""
+    """Obtiene películas populares y las organiza por género."""
     try:
-        data = fetch_popular_movies()  # Llama a la función que obtiene películas populares
-        movies = data['results']  # La clave 'results' contiene las películas
-        base_url = "https://image.tmdb.org/t/p/w500/"
-        for movie in movies:
-            movie['poster_url'] = base_url + movie['poster_path']
-        return render(request, 'home.html', {'movies': movies, 'query': None})
+        movies_by_genre = fetch_popular_movies_by_genre()  # Llama a la nueva función
+        return render(request, 'home.html', {'movies_by_genre': movies_by_genre})
     except Exception as e:
         return render(request, 'home.html', {'error': str(e)})
+
 
 
 from django.shortcuts import render

@@ -22,3 +22,28 @@ def fetch_popular_movies():
 def fetch_movie_details(movie_id):
     """Obtiene los detalles de una película por su ID."""
     return fetch_movies_from_tmdb(f'movie/{movie_id}')
+def fetch_movie_genres():
+    """Obtiene todos los géneros disponibles desde la API de TMDb."""
+    endpoint = "genre/movie/list"
+    data = fetch_movies_from_tmdb(endpoint)
+    return {genre['id']: genre['name'] for genre in data['genres']}
+
+def fetch_popular_movies_by_genre():
+    """Obtiene las películas populares organizadas por género."""
+    genres = fetch_movie_genres()  # Obtén el mapeo de géneros
+    data = fetch_movies_from_tmdb('movie/popular')
+    movies = data['results']
+    
+    # Base URL para imágenes
+    base_url = "https://image.tmdb.org/t/p/w500/"
+    
+    # Crear un diccionario para agrupar las películas por género
+    movies_by_genre = {genre: [] for genre in genres.values()}
+    
+    for movie in movies:
+        movie['poster_url'] = base_url + movie['poster_path']
+        for genre_id in movie['genre_ids']:
+            genre_name = genres.get(genre_id, "Otros")
+            movies_by_genre[genre_name].append(movie)
+    
+    return movies_by_genre
