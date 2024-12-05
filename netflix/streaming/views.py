@@ -210,26 +210,8 @@ def movie_details(request, movie_id):
     
 def search_movies(request):
     query = request.GET.get('query', '')
-    movies = []
-
     if query:
-        api_key = '1fe07a37512a920380b7c85f053ff3ea'
-        url = f'https://api.themoviedb.org/3/search/movie'
-        params = {
-            'api_key': api_key,
-            'query': query,
-            'language': 'es-ES'
-        }
-
-        response = requests.get(url, params=params)
-
-        if response.status_code == 200:
-            data = response.json()
-            movies = data.get('results', [])
-            
-            # Construir la URL de los pósters
-            base_url = "https://image.tmdb.org/t/p/w500/"
-            for movie in movies:
-                movie['poster_url'] = base_url + movie['poster_path'] if movie.get('poster_path') else '/static/images/placeholder.png'
-
-    return render(request, 'search_results.html', {'movies': movies, 'query': query})
+        movies = Movie.objects.filter(title__icontains=query)  # O cualquier otra lógica de búsqueda
+    else:
+        movies = Movie.objects.all()  # Si no hay búsqueda, mostrar todas las películas
+    return render(request, 'home.html', {'movies': movies})

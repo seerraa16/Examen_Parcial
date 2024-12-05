@@ -203,3 +203,42 @@ footer p {
 .add-to-list-btn:hover {
     background-color: #32e02d; /* Un tono ligeramente más oscuro */
 }
+
+
+/* Estilo para el botón de búsqueda */
+.search-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Estilo para el campo de búsqueda dentro del botón */
+.search-input {
+    display: none; /* Inicialmente oculto */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+/* Mostrar el campo de búsqueda al hacer clic en el botón */
+.search-btn:hover .search-input {
+    display: block;
+}
+
+/* Para cuando el usuario hace focus en el input */
+.search-input:focus {
+    border-color: #f39c12;
+    outline: none;
+}
+.search-input.show {
+    display: block;
+}
