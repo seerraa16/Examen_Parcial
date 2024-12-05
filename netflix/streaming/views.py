@@ -210,8 +210,35 @@ def movie_details(request, movie_id):
     
 def search_movies(request):
     query = request.GET.get('query', '')
+    movies = []
+
     if query:
-        movies = Movie.objects.filter(title__icontains=query)  # O cualquier otra lógica de búsqueda
-    else:
-        movies = Movie.objects.all()  # Si no hay búsqueda, mostrar todas las películas
-    return render(request, 'home.html', {'movies': movies})
+        # API Key
+        api_key = '1fe07a37512a920380b7c85f053ff3ea'  # O usa settings.TMDB_API_KEY si lo defines en settings.py
+        
+        # URL de búsqueda en TMDB
+        url = f'https://api.themoviedb.org/3/search/movie'
+        
+        params = {
+            'api_key': api_key,
+            'query': query,
+            'language': 'es-ES',  # Cambia el idioma si es necesario
+        }
+        
+        # Llamar a la API
+        response = requests.get(url, params=params)
+        
+        if response.status_code == 200:
+            data = response.json()
+            movies = data.get('results', [])
+            
+            # Añadir la base de URL para los pósters
+            base_url = "https://image.tmdb.org/t/p/w500/"
+            for movie in movies:
+                movie['poster_url'] = base_url + movie['poster_path']
+                
+        # Si hay algún error en la búsqueda, puedes manejarlo así:
+        else:
+            movies = []
+
+    return render(request, 'search_results.html', {'movies': movies, 'query': query})
