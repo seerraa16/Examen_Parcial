@@ -207,38 +207,56 @@ footer p {
 
 /* Estilo para el botón de búsqueda */
 .search-btn {
-    background-color: #333;
+    background-color: #39ff14; /* Verde fosforito */
     color: white;
     border: none;
-    padding: 10px;
+    padding: 12px 20px;
     font-size: 16px;
     cursor: pointer;
+    border-radius: 30px; /* Bordes redondeados */
     position: relative;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Animaciones para suavizar */
 }
+
 
 /* Estilo para el campo de búsqueda dentro del botón */
 .search-input {
     display: none; /* Inicialmente oculto */
     position: absolute;
-    top: 100%;
+    top: 50px; /* Un poco hacia abajo para no cubrir el botón */
     left: 0;
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    margin-top: 10px;
+    padding: 12px;
+    border: 2px solid #39ff14;
+    border-radius: 30px; /* Bordes redondeados */
+    background-color: #333;
+    color: white;
+    font-size: 16px;
     box-sizing: border-box;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Añadimos transiciones suaves */
+    opacity: 0;
+    transform: scaleY(0); /* Lo reducimos verticalmente para esconderlo */
+    transform-origin: top; /* Animación desde la parte superior */
 }
 
 /* Mostrar el campo de búsqueda al hacer clic en el botón */
-.search-btn:hover .search-input {
-    display: block;
+.search-btn:hover {
+    background-color: #32e02d; /* Un tono ligeramente más oscuro */
+    transform: scale(1.1); /* Efecto de agrandamiento al pasar el ratón */
 }
 
 /* Para cuando el usuario hace focus en el input */
 .search-input:focus {
-    border-color: #f39c12;
+    border-color: #f39c12; /* Un color naranja brillante al hacer focus */
     outline: none;
+    box-shadow: 0 0 5px rgba(243, 156, 18, 0.7); /* Resaltar con sombra */
 }
 .search-input.show {
     display: block;
+    opacity: 1;
+    transform: scaleY(1); /* Expande el campo de búsqueda verticalmente */
+}
+
+.search-input::placeholder {
+    color: #aaa; /* Color gris para el placeholder */
 }

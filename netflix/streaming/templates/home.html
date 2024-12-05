@@ -55,7 +55,7 @@
             let inputField = document.getElementById("search-input");
             // Si el campo de búsqueda está oculto, lo mostramos
             if (inputField.style.display === "none" || inputField.style.display === "") {
-                inputField.style.display = "block";
+                inputField.classList.add("show");  // Agregar clase 'show' para mostrar el campo
                 inputField.focus();
             }
         });
