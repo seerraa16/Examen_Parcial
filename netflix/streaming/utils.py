@@ -23,11 +23,17 @@ def fetch_movie_details(movie_id):
     """Obtiene los detalles de una película por su ID."""
     return fetch_movies_from_tmdb(f'movie/{movie_id}')
 def fetch_movie_genres():
-    """Obtiene todos los géneros disponibles desde la API de TMDb."""
-    endpoint = "genre/movie/list"
-    data = fetch_movies_from_tmdb(endpoint)
-    return data['genres']  # Devuelve directamente la lista de géneros
+    url = 'https://api.themoviedb.org/3/genre/movie/list'
+    params = {
+        'api_key': '1fe07a37512a920380b7c85f053ff3ea',
+        'language': 'es-ES'
+    }
 
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        return response.json().get('genres', [])
+    return []
 
 def fetch_popular_movies_by_genre():
     """Obtiene las películas populares organizadas por género."""

@@ -99,32 +99,52 @@ import requests
 from django.shortcuts import render
 
 def movies_by_category(request, genre_id):
-    # Obtener todos los géneros para mostrarlos en la lista de categorías
+    # Obtener géneros para mostrar en el menú de categorías
     genres = fetch_movie_genres()
 
-    # URL de la API para obtener películas del género seleccionado
+    # Llamada a la API para obtener películas del género seleccionado
     url = f'https://api.themoviedb.org/3/discover/movie'
     params = {
-        'api_key': '1fe07a37512a920380b7c85f053ff3ea',  # Asegúrate de usar tu API Key
+        'api_key': '1fe07a37512a920380b7c85f053ff3ea',
         'with_genres': genre_id,
-        'language': 'es-ES',  # Idioma en español
-        'sort_by': 'popularity.desc'  # Ordena por popularidad
+        'language': 'es-ES',
+        'sort_by': 'popularity.desc'
     }
 
-    # Llamar a la API para obtener películas del género
     response = requests.get(url, params=params)
 
+    # Manejo de errores y datos de respuesta
     if response.status_code == 200:
         data = response.json()
         movies = data.get('results', [])
     else:
         movies = []
 
-    # Renderizar la plantilla con géneros y películas del género seleccionado
-    return render(request, 'categories.html', {
+    # Verifica que el género existe en la lista para evitar errores
+    current_genre = next((genre for genre in genres if genre['id'] == genre_id), None)
+    if not current_genre:
+        current_genre = {'name': 'Género desconocido'}
+
+    return render(request, 'movies_by_categories.html', {
         'genres': genres,
         'movies': movies,
-        'selected_genre': genre_id,  # Enviar el género seleccionado para mostrarlo
+        'genre': current_genre,
+    })
+
+    # Verifica el estado de la respuesta
+    if response.status_code == 200:
+        data = response.json()
+        movies = data.get('results', [])
+        # Añade URL del póster a las películas
+        for movie in movies:
+            movie['poster_url'] = f"https://image.tmdb.org/t/p/w500{movie['poster_path']}" if movie.get('poster_path') else None
+    else:
+        movies = []
+
+    return render(request, 'movies_by_categories.html', {
+        'genres': genres,  # Lista de todos los géneros
+        'movies': movies,  # Películas del género seleccionado
+        'genre': next((g for g in genres if g['id'] == genre_id), {'name': 'Desconocido'}),  # Género actual
     })
 
 
