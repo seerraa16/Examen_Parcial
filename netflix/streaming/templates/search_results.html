@@ -11,8 +11,23 @@
 </head>
 <body>
     <header>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'streaming:categories' %}">Categorías</a></li>
+                    <li><a href="{% url 'streaming:my-list' %}">Mi Lista</a></li>
+    
+                    <li>
+                        <form id="search-form" method="get" action="{% url 'streaming:search-movies' %}">
+                            <button type="button" id="search-button" class="search-btn">Buscar</button>
+                            <input type="text" name="query" id="search-input" placeholder="Buscar películas o series..." class="search-input">
+                        </form>
+                    </li>
+                </ul>
+            </nav>
         <h1>Resultados de búsqueda</h1>
         <p>Buscando: "{{ query }}"</p>
+        
     </header>
 
     {% if movies %}

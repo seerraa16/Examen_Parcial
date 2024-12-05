@@ -145,11 +145,22 @@ h1 {
 
 /* Genre Headers */
 h2 {
-    color: #ffffff;
-    font-size: 24px;
-    margin: 40px 20px 20px;
-    border-left: 5px solid #39ff14; /* Verde fosforito */
-    padding-left: 10px;
+    color: #39ff14; /* Verde fosforito */
+    font-size: 28px;
+    text-transform: uppercase; /* Todo en mayúsculas */
+    text-align: center; /* Centrar texto */
+    font-family: 'Oswald', sans-serif; /* Fuente más estilizada */
+    letter-spacing: 2px; /* Espaciado entre letras */
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #39ff14; /* Línea decorativa debajo */
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+h2:hover {
+    color: #32e02d; /* Color más oscuro al pasar el ratón */
+    text-shadow: 0 0 10px #39ff14; /* Efecto de resplandor */
 }
 
 /* Footer */
