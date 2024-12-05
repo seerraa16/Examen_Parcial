@@ -9,20 +9,33 @@ from django.http import JsonResponse
 from .utils import fetch_popular_movies, fetch_movie_details, fetch_movie_genres
 
 
-# Vista Home para plantillas
-# Vista Home para plantillas
+from django.shortcuts import render
+from .utils import fetch_popular_movies, fetch_popular_tv_shows  # Asegúrate de tener esta función para TV shows
+
 def home(request):
-    """Obtiene películas populares y las muestra en la plantilla de inicio."""
+    """Obtiene películas y series populares y las muestra en la plantilla de inicio."""
     try:
-        data = fetch_popular_movies()  # Llama a la función que obtiene películas populares
-        movies = data['results']  # La clave 'results' contiene las películas
-        # Añadir la base de URL para las imágenes
+        # Obtener películas populares
+        movie_data = fetch_popular_movies()
+        movies = movie_data.get('results', [])
+        # Añadir URL del póster a las películas
         base_url = "https://image.tmdb.org/t/p/w500/"
         for movie in movies:
-            movie['poster_url'] = base_url + movie['poster_path']
-        return render(request, 'home.html', {'movies': movies})  # Enviar películas a la plantilla
+            movie['poster_url'] = base_url + movie.get('poster_path', '')
+
+        # Obtener series populares
+        tv_data = fetch_popular_tv_shows()
+        tv_shows = tv_data.get('results', [])
+        for tv_show in tv_shows:
+            tv_show['poster_url'] = base_url + tv_show.get('poster_path', '')
+
+        return render(request, 'home.html', {
+            'movies': movies,
+            'tv_shows': tv_shows,
+        })
     except Exception as e:
         return render(request, 'home.html', {'error': str(e)})
+
 
 
 from django.shortcuts import render

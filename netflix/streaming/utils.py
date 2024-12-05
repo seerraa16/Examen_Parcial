@@ -54,3 +54,17 @@ def fetch_popular_movies_by_genre():
             movies_by_genre[genre_name].append(movie)
     
     return movies_by_genre
+
+def fetch_popular_tv_shows():
+    """Obtiene series populares desde la API de TMDB."""
+    api_key = '1fe07a37512a920380b7c85f053ff3ea'
+    url = f'https://api.themoviedb.org/3/tv/popular'
+    params = {
+        'api_key': api_key,
+        'language': 'es-ES',  # Cambia el idioma si es necesario
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise Exception(f"Error al obtener series populares: {response.status_code}")
