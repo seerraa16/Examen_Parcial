@@ -8,6 +8,7 @@ class Movie(models.Model):
     poster_url = models.URLField()
     backdrop_url = models.URLField()
     tmdb_id = models.IntegerField(unique=True)
+    poster_path = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.title
