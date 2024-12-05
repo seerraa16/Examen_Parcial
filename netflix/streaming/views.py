@@ -235,10 +235,11 @@ def search_movies(request):
             # Añadir la base de URL para los pósters
             base_url = "https://image.tmdb.org/t/p/w500/"
             for movie in movies:
-                movie['poster_url'] = base_url + movie['poster_path']
-                
-        # Si hay algún error en la búsqueda, puedes manejarlo así:
-        else:
-            movies = []
-
-    return render(request, 'search_results.html', {'movies': movies, 'query': query})
+                poster_path = movie.get('poster_path')  # Usamos .get() para evitar KeyError
+                if poster_path:
+                    movie['poster_url'] = base_url + poster_path
+                else:
+                    # Si no hay poster_path, asignamos una imagen por defecto
+                    movie['poster_url'] = 'ruta/a/imagen/default.jpg'
+            
+            return render(request, 'search_results.html', {'movies': movies})
