@@ -89,6 +89,7 @@ h1 {
     border-radius: 8px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative; /* Necesario para que la información se superponga */
     width: 200px;
     cursor: pointer;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
@@ -102,22 +103,44 @@ h1 {
 .movie-item img {
     width: 100%;
     height: auto;
-    border-bottom: 4px solid #39ff14; /* Verde fosforito para el borde */
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.movie-info {
+    position: absolute; /* Se posiciona sobre la imagen */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
+    color: #ffffff;
+    opacity: 0; /* Inicialmente oculto */
+    visibility: hidden; /* No visible inicialmente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.movie-item:hover .movie-info {
+    opacity: 1; /* Aparece al pasar el mouse */
+    visibility: visible;
 }
 
 .movie-info h2 {
     font-size: 18px;
-    margin: 10px;
     color: #39ff14; /* Verde fosforito */
+    margin: 10px 0;
 }
 
 .movie-info p {
     font-size: 14px;
     color: #b3b3b3;
-    margin: 0 10px 10px;
-    height: 50px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin: 0;
 }
 
 /* Genre Headers */
@@ -157,68 +180,6 @@ footer p {
     .category-item {
         padding: 10px;
     }
-}
-
-/* Movie Category Page Styles */
-.movies-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 20px;
-}
-
-.movie-item {
-    background-color: #333333;
-    margin: 10px;
-    padding: 15px;
-    border-radius: 8px;
-    width: 200px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.movie-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-}
-
-.movie-item h2 {
-    font-size: 18px;
-    margin: 10px 0;
-    color: #e5e5e5;
-}
-
-.movie-item p {
-    font-size: 14px;
-    color: #b3b3b3;
-    margin: 0;
-    height: 50px; /* Limit description height */
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.movie-info {
-    padding: 10px;
-}
-
-.movie-info h2 {
-    font-size: 18px;
-    color: #ffffff;
-    margin: 10px 0;
-}
-
-.movie-info p {
-    font-size: 14px;
-    color: #b3b3b3;
-    height: 50px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.movie-poster {
-    width: 100%;
-    display: block;
-    border-bottom: 4px solid #39ff14; /* Verde fosforito */
 }
 
 .category-item.active {
