@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import MovieListView, MovieDetailView, PlaylistView, RecommendationView, home
+from .views import AddMovieView, DeleteMovieView, MovieListView, MovieDetailView, MyListView, PlaylistView, RecommendationView, home
 from .views import popular_movies, movie_details, search_movies
 from .views import categories, my_list
 from .views import search_movies
 from . import views
+
 
 app_name = 'streaming'
 
@@ -19,5 +20,7 @@ urlpatterns = [
     path('search/', search_movies, name='search-movies'),
     path('categories/', views.categories, name='categories'),  # Mantén esta para la página de categorías
     path('categories/<int:genre_id>/', views.movies_by_category, name='movies-by-category'),  # Mantén esta para los géneros
-    path('my-list/', my_list, name='my-list'),
+    path('add-movie/', AddMovieView.as_view(), name='add-movie'),
+    path('my-list/', MyListView.as_view(), name='my-list'),
+    path('delete-movie/<int:pk>/', DeleteMovieView.as_view(), name='delete-movie'),
 ]

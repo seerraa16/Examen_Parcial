@@ -256,3 +256,43 @@ def search_movies(request):
                     movie['poster_url'] = 'ruta/a/imagen/default.jpg'
             
             return render(request, 'search_results.html', {'movies': movies})
+        
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Movie
+from .serializers import MovieSerializer
+from rest_framework.permissions import IsAuthenticated
+
+class AddMovieView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        movie = Movie.objects.create(
+            title=data.get('title'),
+            description=data.get('description'),
+            release_date=data.get('release_date'),
+            user=request.user
+        )
+        serializer = MovieSerializer(movie)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class MyListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        movies = Movie.objects.filter(user=request.user)
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
+
+class DeleteMovieView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            movie = Movie.objects.get(id=pk, user=request.user)
+            movie.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Movie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
