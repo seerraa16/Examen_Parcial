@@ -7,6 +7,7 @@ from .models import Movie, Playlist, Recommendation
 from .serializers import MovieSerializer, PlaylistSerializer, RecommendationSerializer
 from django.http import JsonResponse
 from .utils import fetch_popular_movies, fetch_movie_details, fetch_movie_genres
+from django.contrib.auth.decorators import login_required
 
 
 from django.shortcuts import render
@@ -270,7 +271,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import Movie, Playlist
 
-@csrf_exempt  # Desactiva CSRF si no estás usando plantillas Django (sólo para desarrollo)
+@login_required
 def add_to_my_list(request):
     if request.method == 'POST':
         try:
