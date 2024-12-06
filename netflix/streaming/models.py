@@ -15,7 +15,7 @@ class Movie(models.Model):
 
 class Playlist(models.Model):
     name = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     movies = models.ManyToManyField(Movie, related_name='playlists')
     created_at = models.DateTimeField(auto_now_add=True)
 

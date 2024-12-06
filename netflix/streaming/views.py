@@ -264,6 +264,40 @@ from .models import Movie
 from .serializers import MovieSerializer
 from rest_framework.permissions import IsAuthenticated
 
+# streaming/views.py
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Movie, Playlist
+
+@csrf_exempt  # Desactiva CSRF si no estás usando plantillas Django (sólo para desarrollo)
+def add_to_my_list(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            movie_id = data.get('movie_id')
+
+            # Suponiendo que el usuario esté autenticado
+            user = request.user
+            if not user.is_authenticated:
+                return JsonResponse({'success': False, 'message': 'Usuario no autenticado'}, status=403)
+
+            movie = Movie.objects.get(id=movie_id)
+
+            # Buscar o crear la lista del usuario
+            playlist, created = Playlist.objects.get_or_create(user=user)
+            playlist.movies.add(movie)
+
+            return JsonResponse({'success': True, 'message': 'Película añadida a tu lista'})
+
+        except Movie.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Película no encontrada'}, status=404)
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)
+
 class AddMovieView(APIView):
     permission_classes = [IsAuthenticated]
 

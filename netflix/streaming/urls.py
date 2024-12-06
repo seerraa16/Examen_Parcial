@@ -23,4 +23,5 @@ urlpatterns = [
     path('add-movie/', AddMovieView.as_view(), name='add-movie'),
     path('my-list/', MyListView.as_view(), name='my-list'),
     path('delete-movie/<int:pk>/', DeleteMovieView.as_view(), name='delete-movie'),
+    path('add-to-my-list/', views.add_to_my_list, name='add_to_my_list')
 ]
