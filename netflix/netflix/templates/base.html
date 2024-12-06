@@ -12,15 +12,24 @@
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Inicio</a></li>
-                <li><a href="{% url 'streaming:categories' %}">Categorías</a></li>
-                <li><a href="{% url 'streaming:my-list' %}">Mi Lista</a></li>
-                <li><a href="{% url 'streaming:search-movies' %}">Buscar</a></li>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Inicio</a></li>
+                    <li><a href="{% url 'streaming:categories' %}">Categorías</a></li>
+                    <li><a href="{% url 'streaming:my-list' %}">Mi Lista</a></li>
+    
+                    <li>
+                        <form id="search-form" method="get" action="{% url 'streaming:search-movies' %}">
+                            <button type="button" id="search-button" class="search-btn">Buscar</button>
+                            <input type="text" name="query" id="search-input" placeholder="Buscar películas o series..." class="search-input">
+                        </form>
+                    </li>
+                </ul>
+            </nav>
 
-            </ul>
-        </nav>
+        
+    </header>
     </header>
     <main>
         {% block content %}
@@ -29,5 +38,25 @@
     <footer>
         <p>&copy; 2023 Netflix UAX. Todos los derechos reservados.</p>
     </footer>
+    <script>
+        // Mostrar el input de búsqueda cuando el usuario hace clic en el botón de "Buscar"
+        document.getElementById("search-button").addEventListener("click", function() {
+            let inputField = document.getElementById("search-input");
+            // Si el campo de búsqueda está oculto, lo mostramos
+            if (inputField.style.display === "none" || inputField.style.display === "") {
+                inputField.classList.add("show");  // Agregar clase 'show' para mostrar el campo
+                inputField.focus();
+            }
+        });
+
+        // Asegurarse de que el formulario se envíe correctamente
+        document.getElementById("search-form").addEventListener("submit", function(event) {
+            let query = document.getElementById("search-input").value.trim();
+            if (!query) {
+                event.preventDefault();  // No enviar si el campo está vacío
+                alert("Por favor, ingresa una búsqueda.");
+            }
+        });
+    </script>
 </body>
 </html>
