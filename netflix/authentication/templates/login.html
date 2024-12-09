@@ -1,17 +1,15 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}
-Inicia sesión
-{% endblock %}
-
-{% block content %}
-<div class="account-container">
-    <h1>Inicia sesión</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+</head>
+<body>
+    <h1>Iniciar Sesión</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Iniciar sesión</button>
+        <button type="submit">Iniciar Sesión</button>
     </form>
-    <p>¿No tienes cuenta? <a href="{% url 'authentication:register' %}">Regístrate aquí</a>.</p>
-</div>
-{% endblock %}
+</body>
+</html>

@@ -64,10 +64,8 @@ ROOT_URLCONF = "netflix.urls"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'netflix/templates'),  # Asegúrate de incluir la ruta a netflix/templates
-        ],
-        'APP_DIRS': True,  # Esto permite que Django busque en las carpetas de cada aplicación también
+        'DIRS': [BASE_DIR / 'templates'],  # Opcional para plantillas globales
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -134,3 +132,4 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+LOGIN_URL = '/authentication/login/'

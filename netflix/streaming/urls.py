@@ -20,7 +20,7 @@ urlpatterns = [
     path('search/', search_movies, name='search-movies'),
     path('categories/', views.categories, name='categories'),  # Mantén esta para la página de categorías
     path('categories/<int:genre_id>/', views.movies_by_category, name='movies-by-category'),  # Mantén esta para los géneros
+    path('add-to-my-list/', views.add_to_my_list, name='add_to_my_list'),
     path('playlist/', views.playlist, name='playlist'),
-    path('add-to-my-list/', views.add_to_my_list, name='add_to_my_list')
     
 ]

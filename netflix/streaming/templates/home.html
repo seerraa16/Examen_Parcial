@@ -66,23 +66,23 @@
     </footer>
     <script>
         function addToMyList(movieId) {
-            fetch('/add-to-my-list/', {
-                method: 'POST',
+            fetch("{% url 'streaming:add_to_my_list' %}", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}' // Incluye CSRF token si es un template Django
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
                 },
                 body: JSON.stringify({ movie_id: movieId })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert("Película añadida a Mi Lista");
+                    alert("Película añadida a tu lista");
                 } else {
-                    alert("Hubo un problema: " + data.message);
+                    alert(data.message);
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error("Error:", error));
         }
         // Mostrar el input de búsqueda cuando el usuario hace clic en el botón de "Buscar"
         document.getElementById("search-button").addEventListener("click", function() {

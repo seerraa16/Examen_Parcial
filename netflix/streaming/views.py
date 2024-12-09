@@ -8,6 +8,7 @@ from .serializers import MovieSerializer, PlaylistSerializer, RecommendationSeri
 from django.http import JsonResponse
 from .utils import fetch_popular_movies, fetch_movie_details, fetch_movie_genres
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 
 
 from django.shortcuts import render
@@ -278,22 +279,17 @@ def add_to_my_list(request):
             data = json.loads(request.body)
             movie_id = data.get('movie_id')
 
-            # Suponiendo que el usuario esté autenticado
-            user = request.user
-            if not user.is_authenticated:
-                return JsonResponse({'success': False, 'message': 'Usuario no autenticado'}, status=403)
+            # Obtener o crear la película en la base de datos
+            movie = get_object_or_404(Movie, id=movie_id)
 
-            movie = Movie.objects.get(id=movie_id)
-
-            # Buscar o crear la lista del usuario
-            playlist, created = Playlist.objects.get_or_create(user=user)
+            # Obtener o crear la playlist del usuario
+            playlist, created = Playlist.objects.get_or_create(user=request.user)
             playlist.movies.add(movie)
 
             return JsonResponse({'success': True, 'message': 'Película añadida a tu lista'})
 
         except Movie.DoesNotExist:
             return JsonResponse({'success': False, 'message': 'Película no encontrada'}, status=404)
-
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)}, status=500)
     else:
@@ -331,3 +327,8 @@ class DeleteMovieView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Movie.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class CustomLoginView(LoginView):
+    template_name = 'authentication/login.html'  # Ruta correcta a la plantilla
+

@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>My Playlists</title>
-</head>
-<body>
-    <h1>My Playlists</h1>
-    <div>
-        {% for playlist in playlists %}
-            <div>
-                <h2>{{ playlist.name }}</h2>
-                <p>Created At: {{ playlist.created_at }}</p>
-                <ul>
-                    {% for movie in playlist.movies %}
-                        <li>{{ movie.title }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+
+{% block title %}Mi Lista{% endblock %}
+
+{% block content %}
+<h1>Mi Lista</h1>
+{% if user.is_authenticated %}
+    <ul>
+        {% for movie in playlist.movies.all %}
+            <li>
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" style="width:100px;">
+                <strong>{{ movie.title }}</strong>
+                <p>{{ movie.description }}</p>
+            </li>
         {% endfor %}
-    </div>
-</body>
-</html>
+    </ul>
+{% else %}
+    <p>Por favor, <a href="{% url 'login' %}">inicia sesión</a> para ver tu lista.</p>
+{% endif %}
+{% endblock %}

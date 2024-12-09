@@ -14,13 +14,11 @@ class Movie(models.Model):
         return self.title
 
 class Playlist(models.Model):
-    name = models.CharField(max_length=255)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    movies = models.ManyToManyField(Movie, related_name='playlists')
-    created_at = models.DateTimeField(auto_now_add=True)
+    movies = models.ManyToManyField(Movie, blank=True)
 
     def __str__(self):
-        return f"{self.name} - {self.user.username}"
+        return f"Playlist de {self.user.username}"
 
 class Recommendation(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='recommendation')
