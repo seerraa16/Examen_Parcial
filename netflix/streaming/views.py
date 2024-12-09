@@ -44,8 +44,8 @@ from django.shortcuts import render
 def categories(request):
     return render(request, 'categories.html')
 
-def my_list(request):
-    return render(request, 'my_list.html')
+def playlist(request):
+    return render(request, 'playlist.html')
 
 
 

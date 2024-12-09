@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="{% url 'home' %}">Inicio</a></li>
                 <li><a href="{% url 'streaming:categories' %}">Categorías</a></li>
-                <li><a href="#">Mi Lista</a></li>
+                <li><a href="{% url 'streaming:playlist' %}">Mi Lista</a></li>
                 <li>
                     <form id="search-form" method="get" action="{% url 'streaming:search-movies' %}">
                         <button type="button" id="search-button" class="search-btn">Buscar</button>
