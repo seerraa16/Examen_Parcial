@@ -64,7 +64,7 @@ ROOT_URLCONF = "netflix.urls"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Opcional para plantillas globales
+        'DIRS': [BASE_DIR / "authentication/templates"],  # Ruta explícita a tus plantillas
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,6 +76,7 @@ TEMPLATES = [
         },
     },
 ]
+
 WSGI_APPLICATION = "netflix.wsgi.application"
 
 

@@ -25,18 +25,22 @@
         </nav>
     </header>
 {% load static %}
+
 {% block title %}
-Inicia sesión
+Mi Cuenta
 {% endblock %}
 
 {% block content %}
 <div class="account-container">
-    <h1>Inicia sesión</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Iniciar sesión</button>
-    </form>
-    <p>¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate aquí</a>.</p>
+    <h1>Mi Cuenta</h1>
+
+    {% if user.is_authenticated %}
+    <p>Bienvenido, {{ user.username }}.</p>
+    <p><a href="{% url 'logout' %}">Cerrar sesión</a></p>
+
+    {% endif %}
 </div>
+{% endblock %}
+
+
 {% endblock %}

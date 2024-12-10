@@ -1,6 +1,29 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflixuax</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'streaming:categories' %}">Categorías</a></li>
+                <li><a href="{% url 'streaming:playlist' %}">Mi Lista</a></li>
 
-{% block title %}Películas por categoría - {{ genre.name }}{% endblock %}
+                <li>
+                    <form id="search-form" method="get" action="{% url 'streaming:search-movies' %}">
+                        <button type="button" id="search-button" class="search-btn">Buscar</button>
+                        <input type="text" name="query" id="search-input" placeholder="Buscar películas o series..." class="search-input">
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
 {% block content %}
     <h1>Películas en la categoría de {{ genre.name }}</h1>
