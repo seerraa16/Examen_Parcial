@@ -8,8 +8,7 @@ from .serializers import MovieSerializer, PlaylistSerializer, RecommendationSeri
 from django.http import JsonResponse
 from .utils import fetch_popular_movies, fetch_movie_details, fetch_movie_genres
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
-
+from django.views.generic import TemplateView
 
 from django.shortcuts import render
 from .utils import fetch_popular_movies, fetch_popular_tv_shows  # Asegúrate de tener esta función para TV shows
@@ -329,6 +328,20 @@ class DeleteMovieView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+from django.contrib.auth.views import LoginView
+
 class CustomLoginView(LoginView):
-    template_name = 'authentication/login.html'  # Ruta correcta a la plantilla
+    template_name = 'authentication/login.html'  # Asegúrate de que esta ruta coincida con la ubicación del archivo.
+
+
+# views.py
+from django.shortcuts import render
+from .models import Playlist
+
+def playlist_view(request):
+    if request.user.is_authenticated:
+        playlist = Playlist.objects.get(user=request.user)  # Ajusta según tu modelo
+    else:
+        playlist = None
+    return render(request, 'playlist.html', {'playlist': playlist})
 
