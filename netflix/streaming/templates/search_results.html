@@ -39,6 +39,7 @@
                 <h2>{{ movie.title }}</h2>
                 <p>{{ movie.release_date|default:"Fecha no disponible" }}</p>
                 <p>{{ movie.overview|default:"Sin descripción disponible" }}</p>
+                <button onclick="addToMyList({{ movie.id }})">Añadir a Mi Lista</button>
             </div>
         </div>
         {% endfor %}
@@ -46,6 +47,49 @@
 {% else %}
     <p>No se encontraron películas para "{{ query }}".</p>
 {% endif %}
+
+<footer>
+    <p>Netflixuax - Tu plataforma de streaming favorita.</p>
+</footer>
+
+<script>
+    function addToMyList(movieId) {
+        fetch("{% url 'streaming:add_to_my_list' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({ movie_id: movieId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Película añadida a tu lista");
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+    // Mostrar el input de búsqueda cuando el usuario hace clic en el botón de "Buscar"
+    document.getElementById("search-button").addEventListener("click", function() {
+        let inputField = document.getElementById("search-input");
+        // Si el campo de búsqueda está oculto, lo mostramos
+        if (inputField.style.display === "none" || inputField.style.display === "") {
+            inputField.classList.add("show");  // Agregar clase 'show' para mostrar el campo
+            inputField.focus();
+        }
+    });
+
+    // Asegurarse de que el formulario se envíe correctamente
+    document.getElementById("search-form").addEventListener("submit", function(event) {
+        let query = document.getElementById("search-input").value.trim();
+        if (!query) {
+            event.preventDefault();  // No enviar si el campo está vacío
+            alert("Por favor, ingresa una búsqueda.");
+        }
+    });
+</script>
+
 </body>
-
-
