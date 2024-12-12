@@ -293,7 +293,6 @@ def add_to_my_list(request):
             return JsonResponse({'success': False, 'message': str(e)}, status=500)
     else:
         return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)
-
 class AddMovieView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -340,8 +339,12 @@ from .models import Playlist
 
 def playlist_view(request):
     if request.user.is_authenticated:
-        playlist = Playlist.objects.get(user=request.user)  # Ajusta según tu modelo
+        try:
+            playlist = Playlist.objects.get(user=request.user)
+            movies = playlist.movies.all()
+        except Playlist.DoesNotExist:
+            movies = []
     else:
-        playlist = None
-    return render(request, 'playlist.html', {'playlist': playlist})
+        movies = []
+    return render(request, 'playlist.html', {'movies': movies})
 
