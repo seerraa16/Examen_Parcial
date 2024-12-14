@@ -13,29 +13,35 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from .utils import fetch_popular_movies, fetch_popular_tv_shows  # Asegúrate de tener esta función para TV shows
 
+from django.shortcuts import render
+from .utils import fetch_popular_movies, fetch_popular_tv_shows
+
 def home(request):
     """Obtiene películas y series populares y las muestra en la plantilla de inicio."""
     try:
         # Obtener películas populares
         movie_data = fetch_popular_movies()
         movies = movie_data.get('results', [])
+        
         # Añadir URL del póster a las películas
         base_url = "https://image.tmdb.org/t/p/w500/"
         for movie in movies:
-            movie['poster_url'] = base_url + movie.get('poster_path', '')
+            movie['poster_url'] = base_url + movie.get('poster_path', '') if movie.get('poster_path') else None
 
         # Obtener series populares
         tv_data = fetch_popular_tv_shows()
         tv_shows = tv_data.get('results', [])
         for tv_show in tv_shows:
-            tv_show['poster_url'] = base_url + tv_show.get('poster_path', '')
+            tv_show['poster_url'] = base_url + tv_show.get('poster_path', '') if tv_show.get('poster_path') else None
 
         return render(request, 'home.html', {
             'movies': movies,
             'tv_shows': tv_shows,
         })
     except Exception as e:
+        # Captura errores y pasa el mensaje a la plantilla
         return render(request, 'home.html', {'error': str(e)})
+
 
 
 
