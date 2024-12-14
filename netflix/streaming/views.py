@@ -347,4 +347,3 @@ def playlist_view(request):
     else:
         movies = []
     return render(request, 'playlist.html', {'movies': movies})
-

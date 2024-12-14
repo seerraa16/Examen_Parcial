@@ -15,9 +15,26 @@ def fetch_movies_from_tmdb(endpoint, params=None):
     else:
         raise Exception(f"Error en la API de TMDb: {response.status_code} - {response.text}")
     
+import requests
+
 def fetch_popular_movies():
-    """Obtiene las películas populares desde TMDb."""
-    return fetch_movies_from_tmdb('movie/popular')
+    api_key = '1fe07a37512a920380b7c85f053ff3ea'
+    url = 'https://api.themoviedb.org/3/movie/popular'
+    params = {
+        'api_key': api_key,
+        'language': 'es-ES'
+    }
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        print("Datos obtenidos de la API:", data)  # Depuración
+        return data
+    else:
+        print("Error al obtener datos:", response.status_code, response.text)  # Errores
+        return {'results': []}
+
 
 def fetch_movie_details(movie_id):
     """Obtiene los detalles de una película por su ID."""

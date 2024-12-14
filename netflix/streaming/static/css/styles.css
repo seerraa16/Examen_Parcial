@@ -126,6 +126,23 @@ h1 {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.movie-item {
+    margin: 10px;
+    text-align: center;
+}
+
+.movie-poster {
+    width: 150px;
+    height: auto;
+    border-radius: 5px;
+}
+
+
 .movie-item:hover .movie-info {
     opacity: 1; /* Aparece al pasar el mouse */
     visibility: visible;
