@@ -14,7 +14,6 @@
                 <li><a href="{% url 'home' %}">Inicio</a></li>
                 <li><a href="{% url 'streaming:categories' %}">Categorías</a></li>
                 <li><a href="{% url 'streaming:playlist' %}">Mi Lista</a></li>
-                
                 <li>
                     <form id="search-form" method="get" action="{% url 'streaming:search-movies' %}">
                         <button type="button" id="search-button" class="search-btn">Buscar</button>
@@ -25,34 +24,26 @@
         </nav>
     </header>
 
-    <h1>Películas populares</h1>
-    <div class="movie-list">
-    {% for movie in movies %}
-        <div class="movie-item">
-            <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" class="movie-poster" />
-            <h3>{{ movie.title }}</h3>
-        </div>
-    {% empty %}
-        <p>No hay películas disponibles en este momento.</p>
-    {% endfor %}
-</div>
-
-    <h1>Series populares</h1>
-    <div class="movies-list">
-        {% if tv_shows %}
-            {% for tv_show in tv_shows %}
-                <div class="movie-item">
-                    <img src="{{ tv_show.poster_url }}" alt="{{ tv_show.name }}" class="movie-poster" />
-                    <div class="movie-info">
-                        <h2>{{ tv_show.name }}</h2>
-                        <p>{{ tv_show.overview }}</p>
+    {% block content %}
+        <h1>Películas recomendadas</h1>
+        
+        {% if movies %}
+            <div class="movies-list">
+                {% for movie in movies %}
+                    <div class="movie-item">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" class="movie-poster" />
+                        <div class="movie-info">
+                            <h2>{{ movie.title }}</h2>
+                            <p>{{ movie.overview }}</p>
+                            <button onclick="addToMyList({{ movie.id }})">Añadir a Mi Lista</button>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         {% else %}
-            <p>No hay series disponibles.</p>
+            <p>No se encontraron películas recomendadas.</p>
         {% endif %}
-    </div>
+    {% endblock %}
 
     <footer>
         <p>Netflixuax - Tu plataforma de streaming favorita.</p>
